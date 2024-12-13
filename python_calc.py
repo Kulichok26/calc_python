@@ -50,13 +50,26 @@ def count_result():
                     entry.insert(0, first/second)
     elif operation == 'sqr':
         clear_all()
-        entry.insert(0, float(text[:-2])**2)
+        if float(text[:-2])**2==int(float(text[:-2])**2):
+            entry.insert(0, int(float(text[:-2])**2))
+        else:
+            entry.insert(0, float(text[:-2])**2)
     elif operation == 'sqrt':
         clear_all()
-        entry.insert(0, sqrt(float(text[:-8])))
+        if sqrt(float(text[:-6]))==int(sqrt(float(text[:-6]))):
+            entry.insert(0, int(sqrt(float(text[:-6]))))
+        else:
+            entry.insert(0, sqrt(float(text[:-6])))
     elif operation == 'recip':
         clear_all()
-        entry.insert(0, 1 / float(text[:-5]))
+        if float(text[:-5]) == 0:
+            entry.insert(0, "дел. на ноль")
+            window.after(1500, clear_all)
+        else:
+            if (1 / float(text[:-5]))==int((1 / float(text[:-5]))):
+                entry.insert(0, int((1 / float(text[:-5]))))
+            else:
+                entry.insert(0, 1 / float(text[:-5]))
 window = Tk()
 window.title('Калькулятор')
 window.geometry('600x600+700+100')

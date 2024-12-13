@@ -1,5 +1,6 @@
 from tkinter import *
 from math import *
+from time import sleep
 
 def input_into_entry(symbol, op = None):
     entry.insert(END, symbol)
@@ -39,11 +40,14 @@ def count_result():
             else:
                 entry.insert(0, first*second)
         if operation == '/':
-            clear_all()
-            if float(first/second)==int(first/second):
-                entry.insert(0, int(float(first/second)))
+            if second == 0:
+                entry.insert(0, "дел. на ноль")
+                window.after(1500, clear_all)
             else:
-                entry.insert(0, first/second)
+                if float(first/second)==int(first/second):
+                    entry.insert(0, int(float(first/second)))
+                else:
+                    entry.insert(0, first/second)
     elif operation == 'sqr':
         clear_all()
         entry.insert(0, float(text[:-2])**2)

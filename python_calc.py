@@ -14,18 +14,36 @@ def count_result():
         splitted = text.split(operation)
         first = float(splitted[0])
         second = float(splitted[1])
+        if int(float(first))==first:
+            first = int(float(splitted[0]))
+        else:
+            first = float(splitted[0])
+        if int(second) == second:
+            second = int(float(splitted[1]))
+        else:
+            second = float(splitted[1])
+        clear_all()
         if operation == '+':
-            clear_all()
-            entry.insert(0, first+second)
+            if float(first+second)==int(first+second):
+                entry.insert(0, int(float(first+second)))
+            else:
+                entry.insert(0, first+second)
         if operation == '-':
-            clear_all()
-            entry.insert(0, first-second)
+            if float(first-second)==int(first-second):
+                entry.insert(0, int(float(first-second)))
+            else:
+                entry.insert(0, first-second)
         if operation == 'x':
-            clear_all()
-            entry.insert(0, first*second)
+            if float(first*second)==int(first*second):
+                entry.insert(0, int(float(first*second)))
+            else:
+                entry.insert(0, first*second)
         if operation == '/':
             clear_all()
-            entry.insert(0, first/second)
+            if float(first/second)==int(first/second):
+                entry.insert(0, int(float(first/second)))
+            else:
+                entry.insert(0, first/second)
     elif operation == 'sqr':
         clear_all()
         entry.insert(0, float(text[:-2])**2)

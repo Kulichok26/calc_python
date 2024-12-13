@@ -2,8 +2,14 @@ from tkinter import *
 from math import *
 from time import sleep
 
-def input_into_entry(symbol, op = None):
+def input_into_entry(symbol, op = None, tag = 'number'):
     global op_count
+    for i in range(30):
+        en = entry.get()
+        if open_massiv[i] in (en+symbol):
+            clear_all()
+            entry.insert(0, en[:-1])
+            op_count = 0
     if (op != None):
         op_count += 1
         if op_count == 2:
@@ -14,15 +20,19 @@ def input_into_entry(symbol, op = None):
         global operation
         operation = op
     else: entry.insert(END, symbol)
+    global tag_last
+    tag_last = tag
 def clear_all():
     entry.delete(0, END)
+    global op_count
+    op_count = 0
 def count_result():
     text = entry.get()
     if operation in text:
         splitted = text.split(operation)
         first = float(splitted[0])
         second = float(splitted[1])
-        if int(float(first))==first:
+        if int(first)==first:
             first = int(float(splitted[0]))
         else:
             first = float(splitted[0])
@@ -77,8 +87,11 @@ def count_result():
                 entry.insert(0, int((1 / float(text[:-5]))))
             else:
                 entry.insert(0, round(1 / float(text[:-5]), 4))
+                
 global op_count
 op_count = 0
+global open_massiv
+open_massiv = ['++', '--', 'xx', '//', '+-', '+x', '+/', '-+', '-x', '-/', 'x+', 'x-', 'x/', '/+', '/-', '/x', '..', '.+', '.-', '.x', './', '+.', '-.', 'x.', '/.', '+^', '-^', '/^', 'x^', '.^']
 
 window = Tk()
 window.title('Калькулятор')

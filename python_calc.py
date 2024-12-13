@@ -2,8 +2,20 @@ from tkinter import *
 from math import *
 from time import sleep
 
-def input_into_entry(symbol, op = None, tag = 'number'):
+
+def input_into_entry(symbol, op = None, tag = 'notnull'):
+    global tag_last
     global op_count
+    global for_empty_massiv
+
+    if tag_last == 'empty': 
+        for i in range(10, 18):
+            if (for_empty_massiv[i] in (entry.get() + symbol)):
+                return
+        for i in range(10):
+            if (for_empty_massiv[i] in (entry.get() + symbol)):
+                clear_all()
+
     for i in range(30):
         en = entry.get()
         if open_massiv[i] in (en+symbol):
@@ -20,12 +32,13 @@ def input_into_entry(symbol, op = None, tag = 'number'):
         global operation
         operation = op
     else: entry.insert(END, symbol)
-    global tag_last
     tag_last = tag
 def clear_all():
     entry.delete(0, END)
     global op_count
     op_count = 0
+    global tag_last
+    tag_last = 'empty'
 def count_result():
     text = entry.get()
     if operation in text:
@@ -87,9 +100,13 @@ def count_result():
                 entry.insert(0, int((1 / float(text[:-5]))))
             else:
                 entry.insert(0, round(1 / float(text[:-5]), 4))
-                
+
+global tag_last
+tag_last = 'empty'
 global op_count
 op_count = 0
+global for_empty_massiv
+for_empty_massiv = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '00', '+', '-', 'x', '/', '^2', '^(1/2)', '^(-1)', '.']
 global open_massiv
 open_massiv = ['++', '--', 'xx', '//', '+-', '+x', '+/', '-+', '-x', '-/', 'x+', 'x-', 'x/', '/+', '/-', '/x', '..', '.+', '.-', '.x', './', '+.', '-.', 'x.', '/.', '+^', '-^', '/^', 'x^', '.^']
 
@@ -127,7 +144,7 @@ button8.place(x = 150, y = 200, width = 50, height = 50)
 button9 = Button(window, bg = 'black', fg = 'white', text = '3', command = lambda: input_into_entry('3'))
 button9.place(x = 200, y = 200, width = 50, height = 50)
 
-button0 = Button(window, bg = 'black', fg = 'white', text = '0', command = lambda: input_into_entry('0'))
+button0 = Button(window, bg = 'black', fg = 'white', text = '0', command = lambda: input_into_entry('0', None, 'empty'))
 button0.place(x = 150, y = 250, width = 50, height = 50)
 
 button_clear_all = Button(window, bg = 'black', fg = 'white', text = 'C', command = clear_all)

@@ -35,17 +35,17 @@ def count_result():
             if float(first+second)==int(first+second):
                 entry.insert(0, int(float(first+second)))
             else:
-                entry.insert(0, first+second)
+                entry.insert(0, round((first+second), 4))
         if operation == '-':
             if float(first-second)==int(first-second):
                 entry.insert(0, int(float(first-second)))
             else:
-                entry.insert(0, first-second)
+                entry.insert(0, round((first-second), 4))
         if operation == 'x':
             if float(first*second)==int(first*second):
                 entry.insert(0, int(float(first*second)))
             else:
-                entry.insert(0, first*second)
+                entry.insert(0, round(first*second, 4))
         if operation == '/':
             if second == 0:
                 entry.insert(0, "дел. на ноль")
@@ -54,19 +54,19 @@ def count_result():
                 if float(first/second)==int(first/second):
                     entry.insert(0, int(float(first/second)))
                 else:
-                    entry.insert(0, first/second)
+                    entry.insert(0, round(first/second, 4))
     elif operation == 'sqr':
         clear_all()
         if float(text[:-2])**2==int(float(text[:-2])**2):
             entry.insert(0, int(float(text[:-2])**2))
         else:
-            entry.insert(0, float(text[:-2])**2)
+            entry.insert(0, round((float(text[:-2]))**2), 4)
     elif operation == 'sqrt':
         clear_all()
         if sqrt(float(text[:-6]))==int(sqrt(float(text[:-6]))):
             entry.insert(0, int(sqrt(float(text[:-6]))))
         else:
-            entry.insert(0, sqrt(float(text[:-6])))
+            entry.insert(0, round(sqrt(float(text[:-6])), 4))
     elif operation == 'recip':
         clear_all()
         if float(text[:-5]) == 0:
@@ -76,7 +76,7 @@ def count_result():
             if (1 / float(text[:-5]))==int((1 / float(text[:-5]))):
                 entry.insert(0, int((1 / float(text[:-5]))))
             else:
-                entry.insert(0, 1 / float(text[:-5]))
+                entry.insert(0, round(1 / float(text[:-5]), 4))
 global op_count
 op_count = 0
 

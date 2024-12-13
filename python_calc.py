@@ -3,10 +3,17 @@ from math import *
 from time import sleep
 
 def input_into_entry(symbol, op = None):
-    entry.insert(END, symbol)
+    global op_count
     if (op != None):
+        op_count += 1
+        if op_count == 2:
+            count_result()
+            entry.insert(END, symbol)
+            op_count = 1
+        else: entry.insert(END, symbol)
         global operation
         operation = op
+    else: entry.insert(END, symbol)
 def clear_all():
     entry.delete(0, END)
 def count_result():
@@ -70,6 +77,9 @@ def count_result():
                 entry.insert(0, int((1 / float(text[:-5]))))
             else:
                 entry.insert(0, 1 / float(text[:-5]))
+global op_count
+op_count = 0
+
 window = Tk()
 window.title('Калькулятор')
 window.geometry('600x600+700+100')

@@ -6,7 +6,7 @@ def help_form(event=None):
     help_form = Toplevel(window)
     help_form.title('Справка')
     help_form.geometry("1000x300")
-    label = Label(help_form, text="Спасибо моей любимой матери Куликовой Наталии Владимировнеза то, что всегда была со мной. Спасибо отцу Куликову Сергею Вячеславовичу за то, что показал мир")
+    label = Label(help_form, text="Текст")
     label.place(x = 20, y = 20)
     
 def on_key_press(event):
@@ -33,7 +33,14 @@ def input_into_entry(symbol, op = None, tag = 'notnull'):
             entry.insert(0, en[:-1])
             op_count = 0
     if (op != None):
-        if (entry.get()=='') and(op == '-'):
+        global operation
+        if ((op=="sqr") or (op=='sqrt') or (op=='recip')):
+            entry.insert(END, symbol)
+            operation = op
+            count_result()
+            print('!')
+        
+        elif (entry.get()=='') and(op == '-'):
             entry.insert(END, symbol)
         else:
             op_count += 1
@@ -42,7 +49,6 @@ def input_into_entry(symbol, op = None, tag = 'notnull'):
                 entry.insert(END, symbol)
                 op_count = 1
             else: entry.insert(END, symbol)
-            global operation
             operation = op
     else: entry.insert(END, symbol)
     tag_last = tag
@@ -53,8 +59,9 @@ def clear_all():
     global tag_last
     #tag_last = 'empty'
 def count_result():
+    #global operation
     text = entry.get()
-    if operation in text:
+    if (operation is not None) and (operation in text):
         if not (text[0] == '-' and operation == '-'):
             splitted = text.split(operation)
             first = float(splitted[0])

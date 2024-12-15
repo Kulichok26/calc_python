@@ -2,18 +2,23 @@ from tkinter import *
 from math import *
 from time import sleep
 
+def on_key_press(event):
+    if event.char not in '0123456789':
+        return "break"
+    return True
 
 def input_into_entry(symbol, op = None, tag = 'notnull'):
     global tag_last
     global op_count
     global for_empty_massiv
 
-    if tag_last == 'empty': 
-        for i in range(10, 18):
-            if (for_empty_massiv[i] in (entry.get() + symbol)):
-                return
-        for i in range(10):
-            if (for_empty_massiv[i] in (entry.get() + symbol)):
+    #if tag_last == 'empty':
+        #print("!")
+    for i in range(10, 17): #18 -> 17
+        if (for_empty_massiv[i] == (entry.get() + symbol)):
+            return
+    for i in range(10):
+        if (for_empty_massiv[i] == (entry.get() + symbol)):
                 clear_all()
 
     for i in range(30):
@@ -23,14 +28,17 @@ def input_into_entry(symbol, op = None, tag = 'notnull'):
             entry.insert(0, en[:-1])
             op_count = 0
     if (op != None):
-        op_count += 1
-        if op_count == 2:
-            count_result()
+        if (entry.get()=='') and(op == '-'):
             entry.insert(END, symbol)
-            op_count = 1
-        else: entry.insert(END, symbol)
-        global operation
-        operation = op
+        else:
+            op_count += 1
+            if op_count == 2:
+                count_result()
+                entry.insert(END, symbol)
+                op_count = 1
+            else: entry.insert(END, symbol)
+            global operation
+            operation = op
     else: entry.insert(END, symbol)
     tag_last = tag
 def clear_all():
@@ -38,20 +46,17 @@ def clear_all():
     global op_count
     op_count = 0
     global tag_last
-    tag_last = 'empty'
+    #tag_last = 'empty'
 def count_result():
     text = entry.get()
     if operation in text:
-        splitted = text.split(operation)
-        first = float(splitted[0])
-        second = float(splitted[1])
-        if int(first)==first:
-            first = int(float(splitted[0]))
-        else:
+        if not (text[0] == '-' and operation == '-'):
+            splitted = text.split(operation)
             first = float(splitted[0])
-        if int(second) == second:
-            second = int(float(splitted[1]))
+            second = float(splitted[1])
         else:
+            splitted = text[1:].split(operation)
+            first = float('-' + splitted[0])
             second = float(splitted[1])
         clear_all()
         if operation == '+':
@@ -100,13 +105,16 @@ def count_result():
                 entry.insert(0, int((1 / float(text[:-5]))))
             else:
                 entry.insert(0, round(1 / float(text[:-5]), 4))
+    global tag_last
+    tag_last = 'notnull'
 
+button_values_massiv = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '+', '-', 'x', '/', '^(1/2)', '^(-1)', '^2']
 global tag_last
-tag_last = 'empty'
+#tag_last = 'empty'
 global op_count
 op_count = 0
 global for_empty_massiv
-for_empty_massiv = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '00', '+', '-', 'x', '/', '^2', '^(1/2)', '^(-1)', '.']
+for_empty_massiv = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '00', '+', 'x', '/', '^2', '^(1/2)', '^(-1)', '.'] #no '-'
 global open_massiv
 open_massiv = ['++', '--', 'xx', '//', '+-', '+x', '+/', '-+', '-x', '-/', 'x+', 'x-', 'x/', '/+', '/-', '/x', '..', '.+', '.-', '.x', './', '+.', '-.', 'x.', '/.', '+^', '-^', '/^', 'x^', '.^']
 
@@ -116,6 +124,7 @@ window.geometry('600x600+700+100')
 
 entry = Entry(window, width = 13, font = ('', 20))
 entry.place(x = 100, y = 10)
+entry.bind("<KeyPress>", on_key_press)
 
 button1 = Button(window, bg = 'black', fg = 'white', text = '7', command = lambda: input_into_entry('7'))
 button1.place(x = 100, y = 100, width = 50, height = 50)
@@ -144,7 +153,7 @@ button8.place(x = 150, y = 200, width = 50, height = 50)
 button9 = Button(window, bg = 'black', fg = 'white', text = '3', command = lambda: input_into_entry('3'))
 button9.place(x = 200, y = 200, width = 50, height = 50)
 
-button0 = Button(window, bg = 'black', fg = 'white', text = '0', command = lambda: input_into_entry('0', None, 'empty'))
+button0 = Button(window, bg = 'black', fg = 'white', text = '0', command = lambda: input_into_entry('0', None)) #no 'empty'
 button0.place(x = 150, y = 250, width = 50, height = 50)
 
 button_clear_all = Button(window, bg = 'black', fg = 'white', text = 'C', command = clear_all)

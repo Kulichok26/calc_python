@@ -1,31 +1,29 @@
 from tkinter import *
 from math import *
 from time import sleep
-
 def help_form(event=None):
     help_form = Toplevel(window)
     help_form.title('Справка')
     help_form.geometry("1000x300")
     label = Label(help_form, text="Текст")
-    label.place(x = 20, y = 20)
-    
+    label.place(x = 20, y = 20)    
 def on_key_press(event):
     if event.char not in '0123456789':
         return "break"
     return True
-
-def input_into_entry(symbol, op = None, tag = 'notnull'):
-    global tag_last
+def input_into_entry(symbol, op = None):
     global op_count
     global for_empty_massiv
-
     for i in range(10, 17): #18 -> 17
         if (for_empty_massiv[i] == (entry.get() + symbol)):
             return
+    for i in range(17, 56):
+        if (for_empty_massiv[i] in (entry.get() + symbol)):
+            entry.delete(len(entry.get()) - 1)
+            entry.insert(len(entry.get()), symbol)
+            return
     for i in range(10):
-        if (for_empty_massiv[i] == (entry.get() + symbol)):
-                clear_all()
-
+        if (for_empty_massiv[i] == (entry.get() + symbol)): clear_all()
     for i in range(30):
         en = entry.get()
         if open_massiv[i] in (en+symbol):
@@ -38,9 +36,7 @@ def input_into_entry(symbol, op = None, tag = 'notnull'):
             entry.insert(END, symbol)
             operation = op
             count_result()
-            print('!')
-        
-        elif (entry.get()=='') and(op == '-'):
+        elif (entry.get()=='') and (op == '-'):
             entry.insert(END, symbol)
         else:
             op_count += 1
@@ -51,19 +47,16 @@ def input_into_entry(symbol, op = None, tag = 'notnull'):
             else: entry.insert(END, symbol)
             operation = op
     else: entry.insert(END, symbol)
-    tag_last = tag
 def clear_all():
     entry.delete(0, END)
     global op_count
     op_count = 0
-    global tag_last
-    #tag_last = 'empty'
 def count_result():
-    #global operation
     text = entry.get()
     if (operation is not None) and (operation in text):
         if not (text[0] == '-' and operation == '-'):
             splitted = text.split(operation)
+            print(splitted[1])
             first = float(splitted[0])
             second = float(splitted[1])
         else:
@@ -117,88 +110,32 @@ def count_result():
                 entry.insert(0, int((1 / float(text[:-5]))))
             else:
                 entry.insert(0, round(1 / float(text[:-5]), 4))
-    global tag_last
-    tag_last = 'notnull'
-
 button_values_massiv = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '+', '-', 'x', '/', '^(1/2)', '^(-1)', '^2']
-global tag_last
 global op_count
 op_count = 0
 global for_empty_massiv
-for_empty_massiv = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '00', '+', 'x', '/', '^2', '^(1/2)', '^(-1)', '.'] #no '-'
+for_empty_massiv = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '00', '+', 'x', '/', '^2', '^(1/2)', '^(-1)', '.', '+00', '-00', 'x00', '/00', '+01', '+02', '+03', '+04', '+05', '+06', '+07', '+08', '+09', '-01', '-02', '-03', '-04', '-05', '-06', '-07', '-08', '-09', 'x01', 'x02', 'x03', 'x04', 'x05', 'x06', 'x07', 'x08', 'x09', '/01', '/02', '/03', '/04', '/05', '/06', '/07', '/08', '/09']
 global open_massiv
 open_massiv = ['++', '--', 'xx', '//', '+-', '+x', '+/', '-+', '-x', '-/', 'x+', 'x-', 'x/', '/+', '/-', '/x', '..', '.+', '.-', '.x', './', '+.', '-.', 'x.', '/.', '+^', '-^', '/^', 'x^', '.^']
-
 window = Tk()
 window.title('Калькулятор')
 window.geometry('220x350+700+100')
 window.bind('<Shift-F11>', help_form)
-
 entry = Entry(window, width = 13, font = ('', 20))
 entry.place(x = 10, y = 10)
 entry.bind("<KeyPress>", on_key_press)
-
+def create_uni_buttons():
+    for i in range(18):
+        button = Button(window, bg = 'black', fg = 'white', text = button_values_massiv[i], command = lambda i=i: input_into_entry(button_values_massiv[i], button_oper_massiv[i])).place(x = button_x_massiv[i], y = button_y_massiv[i], width = 50, height = 50)
+button_values_massiv = ['0', '7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '+', '-', 'x', '/', '^(1/2)', '^(-1)', '^2']
+button_x_massiv = [60, 10, 60, 110, 10, 60, 110, 10, 60, 110, 110, 160, 160, 160, 160, 60, 10, 110]
+button_y_massiv = [250, 100, 100, 100, 150, 150, 150, 200, 200, 200, 250, 200, 150, 100, 50, 50, 50, 50]
+button_oper_massiv = [None, None, None, None, None, None, None, None, None, None, None, '+', '-', 'x', '/', 'sqrt', 'recip', 'sqr']
+create_uni_buttons()
 button_help = Button(window, text="Справка     Shift-F11", command = help_form)
 button_help.place(x = 10, y = 310, width = 200, height = 30)
-
-button1 = Button(window, bg = 'black', fg = 'white', text = '7', command = lambda: input_into_entry('7'))
-button1.place(x = 10, y = 100, width = 50, height = 50)
-
-button2 = Button(window, bg = 'black', fg = 'white', text = '8', command = lambda: input_into_entry('8'))
-button2.place(x = 60, y = 100, width = 50, height = 50)
-
-button3 = Button(window, bg = 'black', fg = 'white', text = '9', command = lambda: input_into_entry('9'))
-button3.place(x = 110, y = 100, width = 50, height = 50)
-
-button4 = Button(window, bg = 'black', fg = 'white', text = '4', command = lambda: input_into_entry('4'))
-button4.place(x = 10, y = 150, width = 50, height = 50)
-
-button5 = Button(window, bg = 'black', fg = 'white', text = '5', command = lambda: input_into_entry('5'))
-button5.place(x = 60, y = 150, width = 50, height = 50)
-
-button6 = Button(window, bg = 'black', fg = 'white', text = '6', command = lambda: input_into_entry('6'))
-button6.place(x = 110, y = 150, width = 50, height = 50)
-
-button7 = Button(window, bg = 'black', fg = 'white', text = '1', command = lambda: input_into_entry('1'))
-button7.place(x = 10, y = 200, width = 50, height = 50)
-
-button8 = Button(window, bg = 'black', fg = 'white', text = '2', command = lambda: input_into_entry('2'))
-button8.place(x = 60, y = 200, width = 50, height = 50)
-
-button9 = Button(window, bg = 'black', fg = 'white', text = '3', command = lambda: input_into_entry('3'))
-button9.place(x = 110, y = 200, width = 50, height = 50)
-
-button0 = Button(window, bg = 'black', fg = 'white', text = '0', command = lambda: input_into_entry('0', None)) #no 'empty'
-button0.place(x = 60, y = 250, width = 50, height = 50)
-
 button_clear_all = Button(window, bg = 'black', fg = 'white', text = 'C', command = clear_all)
 button_clear_all.place(x = 10, y = 250, width = 50, height = 50)
-
-button_dot = Button(window, bg = 'black', fg = 'white', text = '.', command = lambda: input_into_entry('.'))
-button_dot.place(x = 110, y = 250, width = 50, height = 50)
-
-button_plus = Button(window, bg = 'black', fg = 'white', text = '+', command = lambda: input_into_entry('+', '+'))
-button_plus.place(x = 160, y = 200, width = 50, height = 50)
-
 button_equal = Button(window, bg = 'black', fg = 'white', text = '=', command = count_result)
 button_equal.place(x = 160, y = 250, width = 50, height = 50)
-
-button_minus = Button(window, bg = 'black', fg = 'white', text = '-', command = lambda: input_into_entry('-', '-'))
-button_minus.place(x = 160, y = 150, width = 50, height = 50)
-
-button_times = Button(window, bg = 'black', fg = 'white', text = 'x', command = lambda: input_into_entry('x', 'x'))
-button_times.place(x = 160, y = 100, width = 50, height = 50)
-
-button_div = Button(window, bg = 'black', fg = 'white', text = '/', command = lambda: input_into_entry('/', '/'))
-button_div.place(x = 160, y = 50, width = 50, height = 50)
-
-button_square = Button(window, bg = 'black', fg = 'white', text = 'x^2', command = lambda: input_into_entry('^2', 'sqr'))
-button_square.place(x = 110, y = 50, width = 50, height = 50)
-
-button_squareroot = Button(window, bg = 'black', fg = 'white', text = 'x^(1/2)', command = lambda: input_into_entry('^(1/2)', 'sqrt'))
-button_squareroot.place(x = 60, y = 50, width = 50, height = 50)
-
-button_recip = Button(window, bg = 'black', fg = 'white', text = '1/x', command = lambda: input_into_entry('^(-1)', 'recip'))
-button_recip.place(x = 10, y = 50, width = 50, height = 50)
-
 window.mainloop()

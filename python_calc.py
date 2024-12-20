@@ -3,15 +3,14 @@ from math import *
 from time import sleep
 def help_form(event=None):
     help_form = Toplevel(window)
+    help_form.iconbitmap('help.ico')
     help_form.title('Справка')
-    help_form.geometry("1000x300")
-    label = Label(help_form, text="Текст").place(x = 20, y = 20)    
-def on_key_press(event):
-    return "break" if event.char not in '0123456789' else True
+    help_form.geometry("1000x100")
+    label = Label(help_form, text="Авторские права: @Куликова Е.С.\nСпасибо матери Куликовой Наталии Владимировне за то, что всегда была рядом, и отцу Куликову Сергею Вячеславовичу за то, что показал мир.").place(x = 20, y = 20)    
+def on_key_press(event): return "break" if event.char not in '0123456789' else True
 def input_into_entry(symbol, op = None):
     global op_count
-    open_massiv = ['++', '--', 'xx', '//', '+-', '+x', '+/', '-+', '-x', '-/', 'x+', 'x-', 'x/', '/+', '/-', '/x', '..', '.+', '.-', '.x', './', '+.', '-.', 'x.', '/.', '+^', '-^', '/^', 'x^', '.^']
-    for_empty_massiv = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '00', '+', 'x', '/', '^2', '^(1/2)', '^(-1)', '.', '+00', '-00', 'x00', '/00', '+01', '+02', '+03', '+04', '+05', '+06', '+07', '+08', '+09', '-01', '-02', '-03', '-04', '-05', '-06', '-07', '-08', '-09', 'x01', 'x02', 'x03', 'x04', 'x05', 'x06', 'x07', 'x08', 'x09', '/01', '/02', '/03', '/04', '/05', '/06', '/07', '/08', '/09']
+    open_massiv, for_empty_massiv = ['++', '--', 'xx', '//', '+-', '+x', '+/', '-+', '-x', '-/', 'x+', 'x-', 'x/', '/+', '/-', '/x', '..', '.+', '.-', '.x', './', '+.', '-.', 'x.', '/.', '+^', '-^', '/^', 'x^', '.^'], ['01', '02', '03', '04', '05', '06', '07', '08', '09', '00', '+', 'x', '/', '^2', '^(1/2)', '^(-1)', '.', '+00', '-00', 'x00', '/00', '+01', '+02', '+03', '+04', '+05', '+06', '+07', '+08', '+09', '-01', '-02', '-03', '-04', '-05', '-06', '-07', '-08', '-09', 'x01', 'x02', 'x03', 'x04', 'x05', 'x06', 'x07', 'x08', 'x09', '/01', '/02', '/03', '/04', '/05', '/06', '/07', '/08', '/09']
     global operation
     for i in range(10, 17): #18 -> 17
         if ((for_empty_massiv[i] == (entry.get() + symbol))): return
@@ -80,10 +79,10 @@ def count_result():
             entry.insert(0, "дел. на ноль")
             window.after(1500, clear_all)
         else: entry.insert(0, int((1 / float(text[:-5])))) if (1 / float(text[:-5]))==int((1 / float(text[:-5]))) else entry.insert(0, round(1 / float(text[:-5]), 4))
-button_values_massiv = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '+', '-', 'x', '/', '^(1/2)', '^(-1)', '^2']
 global op_count
 op_count = 0
 window = Tk()
+window.iconbitmap('calculator.ico')
 window.title('Калькулятор')
 window.geometry('220x350+700+100')
 window.bind('<Shift-F11>', help_form)
@@ -92,10 +91,7 @@ entry.place(x = 10, y = 10)
 entry.bind("<KeyPress>", on_key_press)
 def create_uni_buttons():
     for i in range(18): button = Button(window, bg = 'black', fg = 'white', text = button_values_massiv[i], command = lambda i=i: input_into_entry(button_values_massiv[i], button_oper_massiv[i])).place(x = button_x_massiv[i], y = button_y_massiv[i], width = 50, height = 50)
-button_values_massiv = ['0', '7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '+', '-', 'x', '/', '^(1/2)', '^(-1)', '^2']
-button_x_massiv = [60, 10, 60, 110, 10, 60, 110, 10, 60, 110, 110, 160, 160, 160, 160, 60, 10, 110]
-button_y_massiv = [250, 100, 100, 100, 150, 150, 150, 200, 200, 200, 250, 200, 150, 100, 50, 50, 50, 50]
-button_oper_massiv = [None, None, None, None, None, None, None, None, None, None, None, '+', '-', 'x', '/', 'sqrt', 'recip', 'sqr']
+button_values_massiv, button_x_massiv, button_y_massiv, button_oper_massiv = ['0', '7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '+', '-', 'x', '/', '^(1/2)', '^(-1)', '^2'], [60, 10, 60, 110, 10, 60, 110, 10, 60, 110, 110, 160, 160, 160, 160, 60, 10, 110], [250, 100, 100, 100, 150, 150, 150, 200, 200, 200, 250, 200, 150, 100, 50, 50, 50, 50], [None, None, None, None, None, None, None, None, None, None, None, '+', '-', 'x', '/', 'sqrt', 'recip', 'sqr']
 create_uni_buttons()
 button_help = Button(window, text="Справка     Shift-F11", command = help_form).place(x = 10, y = 310, width = 200, height = 30)
 button_clear_all = Button(window, bg = 'black', fg = 'white', text = 'C', command = clear_all).place(x = 10, y = 250, width = 50, height = 50)
